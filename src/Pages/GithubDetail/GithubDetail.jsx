@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 
 export default function GithubDetail() {
-    const [detail, setDetail] = useState({});
     const { username } = useParams();
+    const [detail, setDetail] = useState({});
 
-    const fetchDetail = async () => {
-        const url = `https://api.github.com/users/${username}`;
+    const fetchDetail = useCallback(async () => {
+        const url = await `https://api.github.com/users/${username}`;
 
         const response = await fetch(url);
         const result = await response.json();
         setDetail(result);
-    };
+    }, [username]);
 
     useEffect(() => {
         fetchDetail();
-    }, []);
+    }, [fetchDetail]);
 
     return (
         <div>
